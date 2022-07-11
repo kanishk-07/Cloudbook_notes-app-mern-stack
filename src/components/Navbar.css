@@ -1,0 +1,13 @@
+.navbar a {
+    font-weight: 500;
+    color: white;
+}
+
+.navbar a:hover {
+    color: white;
+    background-color: rgba(2, 73, 117, 0.493);
+}
+
+.navbar a.active {
+    background-color: rgba(2, 73, 117, 0.493);
+}
