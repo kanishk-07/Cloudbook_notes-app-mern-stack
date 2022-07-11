@@ -8,7 +8,7 @@ export default function Navbar() {
             <nav className="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
                 <div className="container-fluid">
                     <ul className="navbar-nav mx-5">
-                        <li className="nav-item">
+                        <li className="nav-item mx-5">
                             <Link className="navbar-brand" to="/">
                                 <img src="logo192.png" alt="" width="30" height="30" className="d-inline-block align-text-top" aria-current="page" />
                                 iNotebook
@@ -16,7 +16,7 @@ export default function Navbar() {
                         </li>
                     </ul>
                     <ul className="navbar-nav ms-auto mx-5">
-                        <li className="nav-item">
+                        <li className="nav-item mx-5">
                             <Link className="btn btn-info" to="/about">About</Link>
                         </li>
                     </ul>
