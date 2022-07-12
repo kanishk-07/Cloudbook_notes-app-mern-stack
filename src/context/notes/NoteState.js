@@ -1,22 +1,83 @@
 import NoteContext from "./noteContext";
 import { useState } from 'react';
 
-const NoteState = (props)=> {
-    const notesInitial = [
-        {
-            "title": "hello",
-            "description": "world",
-            "tag": "greeting"
-        },
-        {
-            "title": "hello111",
-            "description": "world111",
-            "tag": "greeting111"
-        }
-    ];
+const NoteState = (props) => {
+    const host = "http://localhost:5000";
+    const notesInitial = [];
     const [notes, setNotes] = useState(notesInitial);
+    const tempAuthToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJjYjM0NTk3NDdlMjhlMzZiYWRiNjQ5In0sImlhdCI6MTY1NzY1OTAzM30.Ffil5xh1Rj_vQbl3CeFftDBl4y8ik_OuAyQF8lwErcs"
+
+    //Get all Notes
+    const getNotes = async () => {
+        // API Call 
+        const response = await fetch(`${host}/api/notes/fetchallnotes`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                "auth-token": tempAuthToken
+            }
+        });
+        const json = await response.json()
+        setNotes(json)
+    }
+
+    //Add note
+    const addNote = async (title, description, tag) => {
+        const response = await fetch(`${host}/api/notes/addnote`, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            headers: {
+                'Content-Type': 'application/json',
+                "auth-token": tempAuthToken
+            },
+            body: JSON.stringify({title, description, tag})
+        });
+        const note = await response.json();
+        setNotes(notes.concat(note));
+    }
+
+    //Delete Note
+    const deleteNote = async (id) => {
+        // API Call
+        const response = await fetch(`${host}/api/notes/deletenote/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                "auth-token": tempAuthToken
+            }
+        });
+        const json = response.json();
+        console.log(json);
+
+        const newNotes = notes.filter((note) => { return note._id !== id })
+        setNotes(newNotes)
+    }
+
+    //Edit Note
+    const editNote = async (id, title, description, tag) => {
+        const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
+            method: 'PUT', // *GET, POST, PUT, DELETE, etc.
+            headers: {
+                'Content-Type': 'application/json',
+                "auth-token": tempAuthToken
+            },
+            body: JSON.stringify({title, description, tag})
+        });
+        const json = await response.json();
+        console.log(json); 
+        let newNotes = JSON.parse(JSON.stringify(notes))
+        for (let index = 0; index < newNotes.length; index++) {
+            if(newNotes[index]._id===id) {
+                newNotes[index].title = title;
+                newNotes[index].description = description;
+                newNotes[index].tag = tag;
+                break;
+            }
+        }
+        setNotes(newNotes);
+    }
+
     return (
-        <NoteContext.Provider value={{notes, setNotes}}>
+        <NoteContext.Provider value={{ notes, addNote, deleteNote, editNote, getNotes }}>
             {props.children}
         </NoteContext.Provider>
     )
