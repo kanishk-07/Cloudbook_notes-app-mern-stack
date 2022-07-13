@@ -15,7 +15,7 @@ const Noteitem = (props) => {
 					right: '0'
 				}
 				}>
-					<span className="badge rounded-pill bg-danger"> {note.tag} </span>
+					{note.tag.length>0 && <span className="badge rounded-pill bg-danger"> {note.tag} </span>}
 				</div>
 				<div className="card-body">
 					<h5 className="card-title">{note.title}</h5>

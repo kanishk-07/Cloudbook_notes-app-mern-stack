@@ -5,7 +5,6 @@ const NoteState = (props) => {
     const host = "http://localhost:5000";
     const notesInitial = [];
     const [notes, setNotes] = useState(notesInitial);
-    const tempAuthToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJjYjM0NTk3NDdlMjhlMzZiYWRiNjQ5In0sImlhdCI6MTY1NzY1OTAzM30.Ffil5xh1Rj_vQbl3CeFftDBl4y8ik_OuAyQF8lwErcs"
 
     //Get all Notes
     const getNotes = async () => {
@@ -14,7 +13,7 @@ const NoteState = (props) => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                "auth-token": tempAuthToken
+                "auth-token": localStorage.getItem('token')
             }
         });
         const json = await response.json()
@@ -27,7 +26,7 @@ const NoteState = (props) => {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             headers: {
                 'Content-Type': 'application/json',
-                "auth-token": tempAuthToken
+                "auth-token": localStorage.getItem('token')
             },
             body: JSON.stringify({title, description, tag})
         });
@@ -42,7 +41,7 @@ const NoteState = (props) => {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                "auth-token": tempAuthToken
+                "auth-token": localStorage.getItem('token')
             }
         });
         const json = response.json();
@@ -58,7 +57,7 @@ const NoteState = (props) => {
             method: 'PUT', // *GET, POST, PUT, DELETE, etc.
             headers: {
                 'Content-Type': 'application/json',
-                "auth-token": tempAuthToken
+                "auth-token": localStorage.getItem('token')
             },
             body: JSON.stringify({title, description, tag})
         });

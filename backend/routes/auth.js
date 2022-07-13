@@ -23,7 +23,7 @@ router.post('/createuser', [
 	try {
 		let user = await User.findOne({ email: req.body.email });
 		if (user) {
-			return res.status(400).json({ error: 'Account with this email already exixts' });
+			return res.status(400).json({ success: false, message: 'Account with this email already exixts' });
 		}
 		const salt = await bcrypt.genSalt(10);
 		const securedPassword = await bcrypt.hash(req.body.password, salt);
@@ -38,9 +38,9 @@ router.post('/createuser', [
 			}
 		}
 		const authToken = jwt.sign(data, JWT_SECRET_KEY);
-		res.json({ authToken: authToken, message: 'User Created Successfully' });
+		res.json({ success: true, authToken: authToken, message: 'User Created Successfully' });
 	} catch (error) {
-		return res.status(500).send("Some error occurred, Please try again");
+		return res.status(500).json({success:false, message: "Some error occurred, Please try again"});
 	}
 });
 
@@ -52,17 +52,17 @@ router.post('/login', [
 ], async (req, res) => {
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
-		return res.status(400).json({ errors: errors.array() });
+		return res.status(400).json({ success:false, errors: errors.array() });
 	}
 	try {
 		const {email, password} = req.body;
 		let user = await User.findOne({email});
 		if (!user) {
-			return res.status(401).json({ error: 'Invalid Credentials' });
+			return res.status(401).json({success: false, message: 'Invalid Credentials' });
 		}
 		const passwordCompare = await bcrypt.compare(password, user.password);
 		if(!passwordCompare) {
-			return res.status(401).json({ error: 'Invalid Credentials' });
+			return res.status(401).json({success: false, message: 'Invalid Credentials' });
 		}
 		const data = {
 			user: {
@@ -70,10 +70,10 @@ router.post('/login', [
 			}
 		}
 		const authToken = jwt.sign(data, JWT_SECRET_KEY);
-		res.json({ authToken: authToken, message: 'LogIn Successful' });
+		res.json({ success: true, authToken: authToken, message: 'LogIn Successful' });
 		
 	} catch (error) {
-		return res.status(500).send("Some error occurred, Please try again");
+		return res.status(500).json({success: false, message: "Some error occurred, Please try again"});
 	}
 });
 
@@ -85,7 +85,7 @@ router.post('/getuser', fetchUser, async (req, res) => {
 		const user = await User.findById(userId).select("-password");
 		res.send(user);
 	} catch (error) {
-		return res.status(500).send("Some error occurred, Please try again");
+		return res.status(500).json({success: false, message: "Some error occurred, Please try again"});
 	}
 });
 

@@ -4,7 +4,7 @@
 
 .navbar a:hover {
     color: white;
-    background-color: rgba(2, 73, 117, 0.493);
+    background-color: rgba(220, 239, 250, 0.493);
 }
 
 .navbar a.active {
