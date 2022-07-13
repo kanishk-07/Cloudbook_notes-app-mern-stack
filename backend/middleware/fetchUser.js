@@ -1,5 +1,6 @@
 var jwt = require('jsonwebtoken');
-const JWT_SECRET_KEY = 'sundaymondaytuesdaywednesdaythursdayfriday';
+require('dotenv').config();
+const JWT_SECRET_KEY = process.env.REACT_APP_JWT_SECRET_KEY;
 
 //lec 51
 

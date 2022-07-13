@@ -6,7 +6,8 @@ const bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 var fetchUser = require('../middleware/fetchUser');
 
-const JWT_SECRET_KEY = 'sundaymondaytuesdaywednesdaythursdayfriday';
+require('dotenv').config();
+const JWT_SECRET_KEY = process.env.REACT_APP_JWT_SECRET_KEY;
 
 /* /api/auth */
 
